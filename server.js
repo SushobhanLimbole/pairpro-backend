@@ -69,6 +69,8 @@ io.on('connection', (socket) => {
   console.log(`🔌 New socket connected: ${socket.id}`);
 
   socket.on('join-room', ({ roomId }) => {
+    console.log(`user joined`);
+    
     if (!roomToSockets[roomId]) {
       roomToSockets[roomId] = [];
     }
@@ -109,10 +111,12 @@ io.on('connection', (socket) => {
 
   // Code editor collaboration events
   socket.on('code-change', ({ roomId, code }) => {
+    console.log('room id: ',roomId);
     socket.to(roomId).emit('code-change', code);
   });
 
   socket.on('cursor-change', ({ roomId, cursorData }) => {
+    console.log('cursor-change emitted');
     socket.to(roomId).emit('cursor-change', {
       socketId: socket.id,
       cursorData,
